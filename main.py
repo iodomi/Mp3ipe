@@ -1,19 +1,11 @@
 import os
+import sys
 
-def get_path():
-    config = ""
-
-    if os.path.exists('path.txt'):
-        try:
-            with open('path.txt', 'r') as f:
-                config = f.read()
-        except Exception:
-            print("Config file was not found!")
-
-    return config
+PATH = "/mnt/data/music"
 
 def file_search(name, directory):
     results = []
+    print(f"Searching for {name}...")
     for root, dirs, files in os.walk(directory):
         for file in files:
             if name.lower() in file.lower():
@@ -34,12 +26,12 @@ def choose(options):
         return None
 
     if len(options) == 1:
-        print(f"Playing: {options[0].removeprefix(base_dir)}...")
+        print(f"Now Playing: {options[0].removeprefix(PATH)}")
         return options[0]
 
     print("Found multiple results:")
     for i, option in enumerate(options, 1):
-        print(f"{i}. {option.removeprefix(base_dir)}")
+        print(f"{i}. {option.removeprefix(PATH)}")
     
     while True:
         try:
@@ -53,16 +45,13 @@ def choose(options):
 
 def play(path):
     if os.path.exists(path):
-        os.system(f'vlc "{path}"')
+        os.system(f'mpv "{path}"')
     else:
         print(f"File was not found ({path})...")
 
-inp: str = input("Which song/album do you want to play?: ")  
-
-base_dir = get_path()
-if base_dir and os.path.exists(base_dir):
-    dir_results = dir_search(inp, base_dir)
-    file_results = file_search(inp, base_dir)
+if PATH and os.path.exists(PATH):
+    dir_results = dir_search(' '.join(sys.argv[1:]), PATH)
+    file_results = file_search(' '.join(sys.argv[1:]), PATH)
 
     results = dir_results + file_results
 
