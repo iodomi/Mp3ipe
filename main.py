@@ -1,25 +1,53 @@
 from sys import argv
 import os
 
-# config:
-PATH = "/mnt/data/music" # enter a full path to your existing music folder
+CONFIG = {
+    "path": "/mnt/data/music", # enter a full path to your music library
+    "cover": True, # enable if you want to display album covers
+    "cover_size": 64 # size of album cover in pixels
+}
 
 class Mp3ipe:
-    def __init__(self, path) -> None:
-         # check if path is correct
-        if not path and not os.path.exists(path):
-            print("Invalid path to music directory!")
-            exit()
+    def __init__(self, config) -> None:
+        try:
+            # variables
+            self.path = config.get("path")
+            self.args = ' '.join(argv[1:])
 
-        # init arguments
-        self.args = ' '.join(argv[1:])
+            # check if path is correct
+            if not self.path and not os.path.exists(self.path):
+                print("Invalid path to music directory!")
+                exit()
 
-        if not self.args == "": # play sound
-            music_file = self.choose(self.find(self.args, path)) # find a music file/folder
-            # play music file with mpv
-            os.system(f'mpv "{music_file}" --display-tags=icy-title --no-audio-display --no-video')
-        else: # show directory contents
-            os.system(f"ls -uxN {path}")
+            if self.args == "": # show directory contents
+                os.system(f"ls -uxN {self.path}")
+            else: # play sound
+
+                # find a music file/folder
+                self.music_file = self.choose(self.find(self.args, self.path))
+                
+                if config.get("cover"): # check if cover is enabled
+                    # fetch and display album cover
+                    self.extract_cover(self.music_file, config.get("cover_size"))
+
+                # play music file with mpv
+                os.system(f'mpv {self.music_file.replace(" ", "\\ ")} --display-tags=icy-title --no-audio-display --no-video')
+                
+        except KeyboardInterrupt:
+            print(" (interrupted)")
+
+    def extract_cover(self, music_file, cover_size):
+        if os.path.isdir(music_file):
+            music_file = music_file + "/" + os.listdir(music_file)[0]
+
+        cover_file = "cover.jpg"
+
+        # extract image using ffmpeg
+        os.system(f"ffmpeg -i {music_file.replace(" ", "\\ ")} -an -vcodec copy {cover_file}")
+
+        if os.path.exists(cover_file):
+            os.system(f"clear && tiv -w {cover_size} -h {cover_size} {cover_file}") # display cover
+            os.remove(cover_file) # remove temporary cover file
 
     def find(self, name, path):
         final_file, final_dir = [], [] # init variables holding found music
@@ -44,14 +72,13 @@ class Mp3ipe:
 
         # if only one song is matching
         if len(options) == 1:
-            print(f"Playing: {options[0].removeprefix(PATH)}...")
             return options[0]
 
         # if there is more than one song matching
         print("Found multiple results:")
         for i, option in enumerate(options, 1):
             # display matching songs in a order
-            print(f"{i}. {option.removeprefix(PATH)}")
+            print(f"{i}. {option.removeprefix(self.path)}")
         
         while True:
             try:
@@ -68,4 +95,4 @@ class Mp3ipe:
                 break
 
 if __name__ == "__main__":
-    Mp3ipe(PATH)
+    Mp3ipe(CONFIG)
