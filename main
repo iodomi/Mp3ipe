@@ -1,3 +1,5 @@
+#!/bin/python
+
 from sys import argv
 import os
 
@@ -31,7 +33,7 @@ class Mp3ipe:
                     self.extract_cover(self.music_file, config.get("cover_size"))
 
                 # play music file with mpv
-                os.system(f'mpv {self.music_file.replace(" ", "\\ ")} --display-tags=icy-title --no-audio-display --no-video')
+                os.system(f"mpv \"{self.music_file}\" --display-tags=icy-title --no-audio-display --no-video")
                 
         except KeyboardInterrupt:
             print(" (interrupted)")
@@ -43,7 +45,7 @@ class Mp3ipe:
         cover_file = "cover.jpg"
 
         # extract image using ffmpeg
-        os.system(f"ffmpeg -i {music_file.replace(" ", "\\ ")} -an -vcodec copy {cover_file}")
+        os.system(f"ffmpeg -i \"{music_file}\" -an -vcodec copy {cover_file}")
 
         if os.path.exists(cover_file):
             os.system(f"clear && tiv -w {cover_size} -h {cover_size} {cover_file}") # display cover
