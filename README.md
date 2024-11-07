@@ -70,7 +70,7 @@ Otherwise if you would like to use parameters, so in this example:
 ./main There, there
 ```
 Mp3ipe will find the music file you were searching for and play it for you!
-![](https://ibb.co/FB7Sp6z)
+![](https://i.ibb.co/tbC7RBD/image.png)
 
 **3. Fork:** You can make your own fork of Mp3ipe if you want to implement your own features, and I'd love it!
 
