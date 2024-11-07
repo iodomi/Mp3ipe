@@ -1,10 +1,11 @@
 #!/bin/python
 
 from sys import argv
+from fabulous import image as img
 import os
 
 CONFIG = {
-    "path": "/mnt/data/music", # enter a full path to your music library
+    "path": "", # enter a full path to your music library
     "cover": True, # enable if you want to display album covers
     "cover_size": 64 # size of album cover in pixels
 }
@@ -18,7 +19,7 @@ class Mp3ipe:
 
             # check if path is correct
             if not self.path and not os.path.exists(self.path):
-                print("Invalid path to music directory!")
+                print("You need to set full path to your music directory in \"CONFIG\" variable!")
                 exit()
 
             if self.args == "": # show directory contents
@@ -48,7 +49,11 @@ class Mp3ipe:
         os.system(f"ffmpeg -i \"{music_file}\" -an -vcodec copy {cover_file}")
 
         if os.path.exists(cover_file):
-            os.system(f"clear && tiv -w {cover_size} -h {cover_size} {cover_file}") # display cover
+            os.system("clear")
+            if cover_size > 0: # check for cover size
+                img.printy(img.Image(cover_file, width=cover_size)) # display cover resized
+            else:
+                img.printy(img.Image(cover_file)) # display cover
             os.remove(cover_file) # remove temporary cover file
 
     def find(self, name, path):

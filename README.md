@@ -4,15 +4,40 @@ Basic python music player made for not demanding folks, that just want to listen
 
 ## Requirements
 
-To fully use Mp3ipe you will need to install some dependencies on your unix-like machine!
+To fully use Mp3ipe you will need to install some of those dependencies on your operating system!
 
-**1. python** - Pretty obvious why it's there...
+**1. python:**
 
-**2. ffmpeg** - It is the core of playing sound!
+Debian:
+`sudo apt-get -y install python3-fabulous`
 
-**3. mpv** - It is the music player I chose to build this on!
+Arch:
+`sudo pacman -S python-fabulous`
 
-**4. tiv** - It is the terminal image viewer I chose for album covers!
+Fedora/Red Hat:
+`yum install python-fabulous`
+
+Compiling it from source:
+`wget https://github.com/jart/fabulous/releases/download/0.4.0/fabulous-0.4.0.tar.gz`
+`tar -xvzf fabulous-0.4.0.tar.gz`
+`cd fabulous-0.4.0`
+`sudo python setup.py install`
+
+**2. mpv:**
+
+Debian:
+`sudo apt-get -y install mpv`
+
+Arch:
+`sudo pacman -S mpv`
+
+Fedora/Red Hat:
+`yum install mpv`
+
+Compiling it from source:
+`git clone https://github.com/mpv-player/mpv-build.git && cd mpv-build`
+`./rebuild -j4`
+`sudo ./install`
 
 ## Manual
 
