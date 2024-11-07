@@ -19,8 +19,11 @@ Fedora/Red Hat:
 
 Compiling it from source:
 `wget https://github.com/jart/fabulous/releases/download/0.4.0/fabulous-0.4.0.tar.gz`
+
 `tar -xvzf fabulous-0.4.0.tar.gz`
+
 `cd fabulous-0.4.0`
+
 `sudo python setup.py install`
 
 **2. mpv:**
@@ -36,7 +39,9 @@ Fedora/Red Hat:
 
 Compiling it from source:
 `git clone https://github.com/mpv-player/mpv-build.git && cd mpv-build`
+
 `./rebuild -j4`
+
 `sudo ./install`
 
 ## Manual
