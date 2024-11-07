@@ -9,48 +9,68 @@ To fully use Mp3ipe you will need to install some of those dependencies on your 
 **1. python:**
 
 Debian:
-`sudo apt-get -y install python3-fabulous`
+```bash
+sudo apt-get -y install python3-fabulous
+```
 
 Arch:
-`sudo pacman -S python-fabulous`
+```bash
+sudo pacman -S python-fabulous
+```
 
 Fedora/Red Hat:
-`yum install python-fabulous`
+```bash
+yum install python-fabulous
+```
 
 Compiling it from source:
-
-`wget https://github.com/jart/fabulous/releases/download/0.4.0/fabulous-0.4.0.tar.gz`
-
-`tar -xvzf fabulous-0.4.0.tar.gz`
-
-`cd fabulous-0.4.0`
-
-`sudo python setup.py install`
+```bash
+wget https://github.com/jart/fabulous/releases/download/0.4.0/fabulous-0.4.0.tar.gz
+tar -xvzf fabulous-0.4.0.tar.gz
+cd fabulous-0.4.0
+sudo python setup.py install
+```
 
 **2. mpv:**
 
 Debian:
-`sudo apt-get -y install mpv`
+```bash
+sudo apt-get -y install mpv
+```
 
 Arch:
-`sudo pacman -S mpv`
+```bash
+sudo pacman -S mpv
+```
 
 Fedora/Red Hat:
-`yum install mpv`
+```bash
+yum install mpv
+```
 
 Compiling it from source:
-
-`git clone https://github.com/mpv-player/mpv-build.git && cd mpv-build`
-
-`./rebuild -j4`
-
-`sudo ./install`
+```bash
+git clone https://github.com/mpv-player/mpv-build.git && cd mpv-build
+./rebuild -j4
+sudo ./instal
+```
 
 ## Manual
 
 **1. Configure:** You can achive this by editing main.py and modifying CONFIG variable.
 
-**2. Use:** You will need to execute this file so go in terminal and type: `python main.py`, without parameters it will just display the contents of your music library that you defined in CONFIG variable. Otherwise if you use parameters, so: `python main.py Paranoid Android` (this is an example) Mp3ipe will find your song and play it!
+**2. Use:** You will need to execute this file so go in terminal and add execution permission to it:
+```bash
+chmod +x main
+```
+without parameters it will just display the contents of your music library that you defined in CONFIG variable. 
+
+Otherwise if you would like to use parameters, so in this example:
+```bash
+./main There, there
+```
+Mp3ipe will find the music file you were searching for and play it for you!
+![](https://ibb.co/FB7Sp6z)
 
 **3. Fork:** You can make your own fork of Mp3ipe if you want to implement your own features, and I'd love it!
 
