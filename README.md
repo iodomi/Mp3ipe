@@ -18,6 +18,7 @@ Fedora/Red Hat:
 `yum install python-fabulous`
 
 Compiling it from source:
+
 `wget https://github.com/jart/fabulous/releases/download/0.4.0/fabulous-0.4.0.tar.gz`
 
 `tar -xvzf fabulous-0.4.0.tar.gz`
@@ -38,6 +39,7 @@ Fedora/Red Hat:
 `yum install mpv`
 
 Compiling it from source:
+
 `git clone https://github.com/mpv-player/mpv-build.git && cd mpv-build`
 
 `./rebuild -j4`
