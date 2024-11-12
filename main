@@ -2,19 +2,20 @@
 
 from sys import argv
 from fabulous import image as img
+from subprocess import Popen
 import os
 
 CONFIG = {
     "path": "", # enter a full path to your music library
     "cover": True, # enable if you want to display album covers
-    "cover_size": 64 # size of album cover in pixels
+    "cover_size": 72 # size of album cover in pixels
 }
 
 class Mp3ipe:
-    def __init__(self, config) -> None:
+    def __init__(self) -> None:
         try:
             # variables
-            self.path = config.get("path")
+            self.path = CONFIG.get("path")
             self.args = ' '.join(argv[1:])
 
             # check if path is correct
@@ -25,19 +26,36 @@ class Mp3ipe:
             if self.args == "": # show directory contents
                 os.system(f"ls -uxN {self.path}")
             else: # play sound
-
-                # find a music file/folder
                 self.music_file = self.choose(self.find(self.args, self.path))
-                
-                if config.get("cover"): # check if cover is enabled
-                    # fetch and display album cover
-                    self.extract_cover(self.music_file, config.get("cover_size"))
-
-                # play music file with mpv
-                os.system(f"mpv \"{self.music_file}\" --display-tags=icy-title --no-audio-display --no-video")
+                self.play(self.music_file)
                 
         except KeyboardInterrupt:
             print(" (interrupted)")
+
+    def play(self, music_file):
+        if os.path.isdir(music_file):
+            songs = []
+
+            for root, dirs, files in os.walk(music_file):
+                songs.extend(
+                os.path.join(root, file) for file in files
+                if file.lower().endswith(('.mp3', '.flac', '.wav', '.ogg', '.avi')))
+            
+            if songs:
+                for song in songs:
+                    os.system("clear")
+                    if CONFIG.get("cover"):
+                        self.extract_cover(song, CONFIG.get("cover_size"))
+                    print(f"{os.path.basename(music_file)}: {os.path.basename(song)}")
+                    Popen(["mpv", song, "--display-tags=icy-title", "--no-video"]).wait()
+            else:
+                print("No songs have been found...")
+        elif os.path.isfile(music_file):
+            os.system("clear")
+            if CONFIG.get("cover"):
+                self.extract_cover(music_file, CONFIG.get("cover_size"))
+            print(os.path.basename(music_file))
+            Popen(["mpv", music_file, "--display-tags=icy-title", "--no-video"]).wait()
 
     def extract_cover(self, music_file, cover_size):
         if os.path.isdir(music_file):
@@ -59,16 +77,22 @@ class Mp3ipe:
     def find(self, name, path):
         final_file, final_dir = [], [] # init variables holding found music
         
-        # walk thru entire music directory 
+        # search for an item
         for root, dirs, files in os.walk(path):
+            # if found skip
+            if 'Album' in root:
+                dirs[:] = []
+            
             # directory
             for dir_name in dirs:
                 if name.lower() in dir_name.lower():
                     final_dir.append(os.path.join(root, dir_name))
+            
             # file
             for file_name in files:
                 if name.lower() in file_name.lower():
                     final_file.append(os.path.join(root, file_name))
+
         return final_dir + final_file # return path to a file/folder
 
     def choose(self, options):
@@ -102,4 +126,4 @@ class Mp3ipe:
                 break
 
 if __name__ == "__main__":
-    Mp3ipe(CONFIG)
+    Mp3ipe()
